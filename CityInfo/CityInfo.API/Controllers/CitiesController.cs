@@ -14,12 +14,13 @@ namespace CityInfo.API.Controllers
         [HttpGet]
         public JsonResult GetCities()
         {
-            return new JsonResult(
-                new List<Object>()
-                {
-                new { id = 1, Name = "New York City"},
-                new { id = 2, Name = "Antwerp"}
-            });
+            return new JsonResult(CitiesDataStore.Current.Cities);
+        }
+
+        [HttpGet("{id}")]
+        public JsonResult GetCity(int id)
+        {
+            return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id));
         }
     }
 }
