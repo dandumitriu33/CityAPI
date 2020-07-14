@@ -31,7 +31,8 @@ namespace CityInfo.API
                 app.UseExceptionHandler();
             }
 
-            //app.UseRouting();
+            //app.UseStatusCodePages();  // returns a short line of text with the status code
+
             app.UseMvc();
             
         }

@@ -11,16 +11,37 @@ namespace CityInfo.API.Controllers
     //[Route("api/[controller]")] // same as above as cities is the name of the controller
     public class CitiesController : ControllerBase
     {
+        //[HttpGet]
+        //public JsonResult GetCities()
+        //{
+        //    return new JsonResult(CitiesDataStore.Current.Cities);
+        //}
+
         [HttpGet]
-        public JsonResult GetCities()
+        public IActionResult GetCities()
         {
-            return new JsonResult(CitiesDataStore.Current.Cities);
+            return Ok(CitiesDataStore.Current.Cities);
         }
 
+        //[HttpGet("{id}")]
+        //public JsonResult GetCity(int id)
+        //{
+        //    return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id));
+        //}
+
         [HttpGet("{id}")]
-        public JsonResult GetCity(int id)
+        public IActionResult GetCity(int id)
         {
-            return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == id));
+            // find city
+            var cityToReturn = CitiesDataStore.Current.Cities
+                .FirstOrDefault(c => c.Id == id);
+
+            if (cityToReturn == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(cityToReturn);
         }
     }
 }
