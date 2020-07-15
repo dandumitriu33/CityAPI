@@ -56,6 +56,11 @@ namespace CityInfo.API.Services
             city.PointsOfInterest.Add(pointOfInterest);
         }
 
+        public void UpdatePointOfInterestForCity(int cityId, PointOfInterest pointOfInterest)
+        {
+            // used for other Entity Framework type of software that doesn't track the entities or tracks them differently
+        }
+
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
