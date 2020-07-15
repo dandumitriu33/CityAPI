@@ -26,7 +26,7 @@ namespace CityInfo.API.Controllers
         {
             try
             {
-                throw new Exception("Exception example");
+                //throw new Exception("Exception example");
                 var city = CitiesDataStore.Current.Cities
                     .FirstOrDefault(c => c.Id == cityId);
 
@@ -40,7 +40,7 @@ namespace CityInfo.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Exception while getting points of interest for city with i {cityId}.", ex);
+                _logger.LogCritical($"Exception while getting points of interest for city with id {cityId}.", ex);
                 return StatusCode(500, "An issue occurred while processing your request.");
             }
         }
