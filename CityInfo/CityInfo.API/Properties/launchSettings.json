@@ -14,6 +14,8 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+        //"connectionStrings:cityInfoDBConnectionString": "Server=(localdb)\\mssqllocaldb;Database=CityInfoDB;Trusted_Connection=True;" // overrides 
+        // any other connections strings, this is where the production string would be
     },
     "CityInfo.API": {
       "commandName": "Project",
