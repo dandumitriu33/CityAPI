@@ -224,26 +224,17 @@ namespace CityInfo.API.Controllers
         public IActionResult PartiallyUpdatePointOfIntrest(int cityId, int id,
             [FromBody] JsonPatchDocument<PointOfInterestForUpdateDto> patchDoc)
         {
-            var city = CitiesDataStore.Current.Cities
-               .FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            if (!_cityInfoRepository.CityExists(cityId))
+            {
+                return NotFound();
+            }
+            var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+            if (pointOfInterestEntity == null)
             {
                 return NotFound();
             }
 
-            var pointOfInterestFromStore = city.PointsOfInterest
-                .FirstOrDefault(p => p.Id == id);
-            if (pointOfInterestFromStore == null)
-            {
-                return NotFound();
-            }
-
-            var pointOfInterestToPatch =
-                new PointOfInterestForUpdateDto()
-                {
-                    Name = pointOfInterestFromStore.Name,
-                    Description = pointOfInterestFromStore.Description
-                };
+            var pointOfInterestToPatch = _mapper.Map<PointOfInterestForUpdateDto>(pointOfInterestEntity);
 
             patchDoc.ApplyTo(pointOfInterestToPatch, ModelState);
             if (!ModelState.IsValid)
@@ -263,8 +254,11 @@ namespace CityInfo.API.Controllers
                 return BadRequest(ModelState);
             };
 
-            pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
-            pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
+            _mapper.Map(pointOfInterestToPatch, pointOfInterestEntity);
+
+            _cityInfoRepository.UpdatePointOfInterestForCity(cityId, pointOfInterestEntity);
+
+            _cityInfoRepository.Save();
 
             return NoContent(); // typical return for updates ... 200 Ok is not a tragedy
 
